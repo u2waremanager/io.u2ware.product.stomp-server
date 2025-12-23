@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -15,7 +14,6 @@ import com.nimbusds.jose.jwk.RSAKey;
 
 import io.u2ware.common.docs.MockMvcRestDocs;
 import io.u2ware.common.oauth2.crypto.JoseKeyEncryptor;
-import io.u2ware.common.oauth2.crypto.JoseKeyGenerator;
 import io.u2ware.common.oauth2.jwt.JwtDecoderBuilder;
 
 

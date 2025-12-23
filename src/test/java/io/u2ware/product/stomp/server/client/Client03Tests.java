@@ -1,8 +1,5 @@
 package io.u2ware.product.stomp.server.client;
 
-import java.lang.reflect.Type;
-import java.util.concurrent.CompletableFuture;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
@@ -11,16 +8,11 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.ApplicationContext;
-import org.springframework.messaging.simp.stomp.StompFrameHandler;
-import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.u2ware.common.stomp.client.WebsocketStompClient;
-import io.u2ware.common.stomp.client.WebsocketStompClientHandler;
 import io.u2ware.common.stomp.client.handlers.LoggingHandler;
 import io.u2ware.product.stomp.server.oauth2.Oauth2Docs;
 
@@ -31,8 +23,7 @@ public class Client03Tests {
     
     protected Log logger = LogFactory.getLog(getClass());
 
-    private @LocalServerPort int port;
-	private @Autowired ApplicationContext ac;
+    protected @LocalServerPort int port;
 
     protected @Autowired MockMvc mvc;
     protected @Autowired ObjectMapper mapper;

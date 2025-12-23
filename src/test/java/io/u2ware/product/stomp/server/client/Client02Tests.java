@@ -1,7 +1,6 @@
 package io.u2ware.product.stomp.server.client;
 
 import java.lang.reflect.Type;
-import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,8 +28,7 @@ public class Client02Tests {
     
     protected Log logger = LogFactory.getLog(getClass());
 
-    private @LocalServerPort int port;
-	private @Autowired ApplicationContext ac;
+    protected @LocalServerPort int port;
 
     protected @Autowired MockMvc mvc;
     protected @Autowired ObjectMapper mapper;
@@ -69,14 +66,14 @@ public class Client02Tests {
 
 		Thread.sleep(1000);			
 		
-		CompletableFuture<WebsocketStompClient> client2 = WebsocketStompClient.withSockJS()
+		WebsocketStompClient.withSockJS()
 			.connect(od.stomp(port, "client2"), new LoggingHandler("client2"))
 			.whenComplete((c1, u1)->{
 				System.err.println("client2 connect ");
 
 
 				String msg = "hello world";
-				JsonNode node = mapper.createObjectNode();
+				// JsonNode msg = mapper.createObjectNode();
 
 				c1.sleep(100).send("/app/room1", msg);
 
