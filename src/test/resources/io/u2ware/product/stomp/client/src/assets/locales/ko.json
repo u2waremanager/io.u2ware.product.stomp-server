@@ -6,7 +6,7 @@
     "index" : {
         "bar" : {
             "title" : "U2ware STOMP",
-            "start" : "관리자"
+            "start" : "시작하기"
         },
 
         "navigation" : {
@@ -48,8 +48,8 @@
         "bars" : {
             "title" : "Bars"
         },
-        "items" : {
-            "title" : "Items"
+        "channels" : {
+            "title" : "Channels"
         },
         "users" : {
             "title" : "Users"

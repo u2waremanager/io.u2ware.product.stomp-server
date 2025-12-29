@@ -6,9 +6,9 @@ const name = "[/assets/apis/common.js]";
 const $common = {
 
   ////////////////////////////////////
-  // Axios Utils..
+  // api Utils..
   ////////////////////////////////////
-  axios : {
+  api : {
     
     execute(options) {
       options["paramsSerializer"] = (p)=>{
@@ -47,91 +47,47 @@ const $common = {
       }
       throw e;
     },
-  },
 
-
-  api : {
-
-    jwt(token){
-      let base64Payload = token.split('.')[1];
-      let base64 = base64Payload.replace(/-/g, '+').replace(/_/g, '/');
-      let decodedJWT = JSON.parse(
-            decodeURIComponent(
-              window
-                .atob(base64)
-                .split('')
-                .map(function (c) {
-                  return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                })
-                .join('')
-        )
-      );
-      return decodedJWT;
-    },
-
-
-
-    auth(oauth2, target, type) {
-      let token_type = "bearar";
-      let id_token = oauth2;
-
-      if (typeof oauth2 == "object") { 
-        token_type = oauth2.token_type;
-        id_token = oauth2.id_token;
+    headers(headers, token){
+      if(token == undefined) {
+        return (headers == undefined) ? {} : headers;
       }
-
-      if("headers" == type || undefined == type) { // headers..
-        const authorization = `${token_type} ${id_token}`;
-        if (target == undefined) {
-          return { Authorization: authorization };
-        } else {
-          target["Authorization"] = authorization;
-          return target;
-        }
-      }else if("params" == type){ // params
-        if (target == undefined) {
-          return { access_token: id_token };
-        } else {
-          target["access_token"] = id_token;
-          return target;
-        }
-      }else if("query" == type){ // query
-        let p = $common.api.auth(oauth2, target, "params");
-        let v = qs.stringify(p, { arrayFormat: "repeat" });
-        return v;
+      if (headers == undefined) {
+        return { Authorization: `Bearer ${token}` };
+      } else {
+        headers["Authorization"] = `Bearer ${token}`;
+        return headers;
       }
     },
 
+    params(params, token){
+      if(token == undefined) {
+        return (params == undefined) ? {} : params;
+      }
 
+      if (params == undefined) {
+        return { access_token: `${token}` };
+      } else {
+        params["access_token"] = `${token}`;
+        return params;
+      } 
+    },
 
-    // headers(headers, token) {
-    //   let oauth2 =
-    //     token == undefined ? $accountsState.computed.oauth2.get() : token;
-    //   return $common.api.auth(oauth2, headers, "headers");
-    // },
-    // params(params, token) {
-    //   let oauth2 =
-    //     token == undefined ? $accountsState.computed.oauth2.get() : token;
-    //   return $common.api.auth(oauth2, params, "params");
-    // },
-    // query(params, token) {
-    //   let oauth2 =
-    //     token == undefined ? $accountsState.computed.oauth2.get() : token;
-    //   return $common.api.auth(oauth2, params, "query");
-    // },
+    query(query, token){
+      if(token == undefined) {
+        return (query == undefined) ? "" : query;
+      }
+      if (query == undefined) {
+        let params = { access_token: `${token}` };
+        return qs.stringify(params, { arrayFormat: "repeat" });
 
+      } else {
+        let params = qs.parse(query);
+        params["access_token"] = `${token}`;
+        return qs.stringify(params, { arrayFormat: "repeat" });
+      } 
+    },
 
-
-
-
-
-
-
-
-
-
-
-    
     pageable(data) {
       if (!data) return {};
       const sort = [];
@@ -147,15 +103,14 @@ const $common = {
       };
       return pageRequest;
     },
+  },
 
-    link(base, data) {
-      if (typeof data == "object") {
-        return `${data._links.self.href}`;
-      } else {
-        return `${base}/${data}`;
-      }
-    },   
 
+
+  ////////////////////////////////////
+  // Meta Utils..
+  ////////////////////////////////////
+  meta : {
 
     env() {
 
@@ -200,8 +155,54 @@ const $common = {
         }
         return result;
       });
-    }
-  },
+    },
 
+    jwt(token){
+      let base64Payload = token.split('.')[1];
+      let base64 = base64Payload.replace(/-/g, '+').replace(/_/g, '/');
+      let decodedJWT = JSON.parse(
+            decodeURIComponent(
+              window
+                .atob(base64)
+                .split('')
+                .map(function (c) {
+                  return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                })
+                .join('')
+        )
+      );
+      return decodedJWT;
+    },
+
+
+    href(pathnames, protocols) {
+
+      if(pathnames == undefined) return undefined;
+
+      console.log(window.location);
+      let hostname = window.location.hostname;
+      let port = window.location.port;
+      let host = window.location.host;
+      let protocol = window.location.protocol;
+
+      let origin = window.location.origin;
+      let pathname = window.location.pathname;
+      let href = window.location.href; 
+
+      // protocol: "https:"
+      // hostname: "192.168.75.107"
+      // port: "3000"
+      // host: "192.168.75.107:3000"
+      // origin: "https://192.168.75.107:3000"
+      // pathname: "/contents/83151238-fda2-4feb-93bc-a11b94a38f1d/11"
+      // href: "https://192.168.75.107:3000/contents/83151238-fda2-4feb-93bc-a11b94a38f1d/11"
+
+      if(protocols == undefined) {
+        return `${origin}${pathnames}`;
+      }else{
+        return `${protocols}://${host}${pathnames}`;
+      }
+    }
+  }
 }
 export default $common;

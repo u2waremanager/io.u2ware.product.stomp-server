@@ -24,8 +24,7 @@ import org.springframework.security.oauth2.server.resource.web.DefaultBearerToke
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import io.u2ware.common.oauth2.jwt.JwtAuthenticationConverterBuilder;
-import io.u2ware.common.oauth2.jwt.JwtDecoderBuilder;
+import io.u2ware.common.oauth2.jwt.JwtConfiguration;
 
 
 @Configuration
@@ -74,20 +73,22 @@ public class ApplicationSecurityConfig {
         return r;
     }
 
-    @Autowired(required = false)
-    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
+    
+    private @Autowired(required = false) Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
+	private @Autowired OAuth2ResourceServerProperties oauth2ResourceServerProperties;
 
     @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        return JwtAuthenticationConverterBuilder.getInstance().build(jwtGrantedAuthoritiesConverter);
+    public JwtConfiguration jwtConfiguration() throws Exception {
+        return new JwtConfiguration(oauth2ResourceServerProperties);
     }
 
-	@Autowired
-	private OAuth2ResourceServerProperties oauth2ResourceServerProperties;
-
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter(JwtConfiguration jwtConfiguration) {
+        return jwtConfiguration.jwtConverter(jwtGrantedAuthoritiesConverter);
+    }
 
     @Bean
-    public JwtDecoder jwtDecoder() throws Exception {
-        return JwtDecoderBuilder.getInstance().build(oauth2ResourceServerProperties);
+    public JwtDecoder jwtDecoder(JwtConfiguration jwtConfiguration) throws Exception {
+        return jwtConfiguration.jwtDecoder();
     }
 }

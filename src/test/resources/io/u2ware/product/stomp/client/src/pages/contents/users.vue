@@ -51,7 +51,7 @@
         -->
         <template v-slot:item.userId="{ item }">
           <v-btn
-            :disabled="currentUser.userId == item.userId"
+            :disabled="userinfo.userId == item.userId"
             variant="plain"
             color="primary"
             :text="item.userId"
@@ -208,7 +208,7 @@ export default {
 
   computed: {
     subtitle: $contentsStore.computed.subtitle,
-    currentUser : $contentsStore.computed.currentUser,
+    userinfo : $contentsStore.computed.userinfo,
   },
 
   methods: {

@@ -20,14 +20,15 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/[...path]': RouteRecordInfo<'/[...path]', '/:path(.*)', { path: ParamValue<true> }, { path: ParamValue<false> }>,
-    '/accounts': RouteRecordInfo<'/accounts', '/accounts', Record<never, never>, Record<never, never>, '/accounts/login' | '/accounts/logoff' | '/accounts/logon' | '/accounts/logout'>,
+    '/accounts': RouteRecordInfo<'/accounts', '/accounts', Record<never, never>, Record<never, never>, '/accounts/' | '/accounts/login' | '/accounts/logoff' | '/accounts/logon' | '/accounts/logout'>,
+    '/accounts/': RouteRecordInfo<'/accounts/', '/accounts', Record<never, never>, Record<never, never>>,
     '/accounts/login': RouteRecordInfo<'/accounts/login', '/accounts/login', Record<never, never>, Record<never, never>>,
     '/accounts/logoff': RouteRecordInfo<'/accounts/logoff', '/accounts/logoff', Record<never, never>, Record<never, never>>,
     '/accounts/logon': RouteRecordInfo<'/accounts/logon', '/accounts/logon', Record<never, never>, Record<never, never>>,
     '/accounts/logout': RouteRecordInfo<'/accounts/logout', '/accounts/logout', Record<never, never>, Record<never, never>>,
-    '/contents': RouteRecordInfo<'/contents', '/contents', Record<never, never>, Record<never, never>, '/contents/' | '/contents/destinations' | '/contents/tokens' | '/contents/users'>,
+    '/contents': RouteRecordInfo<'/contents', '/contents', Record<never, never>, Record<never, never>, '/contents/' | '/contents/channels' | '/contents/tokens' | '/contents/users'>,
     '/contents/': RouteRecordInfo<'/contents/', '/contents', Record<never, never>, Record<never, never>>,
-    '/contents/destinations': RouteRecordInfo<'/contents/destinations', '/contents/destinations', Record<never, never>, Record<never, never>>,
+    '/contents/channels': RouteRecordInfo<'/contents/channels', '/contents/channels', Record<never, never>, Record<never, never>>,
     '/contents/tokens': RouteRecordInfo<'/contents/tokens', '/contents/tokens', Record<never, never>, Record<never, never>>,
     '/contents/users': RouteRecordInfo<'/contents/users', '/contents/users', Record<never, never>, Record<never, never>>,
     '/examples': RouteRecordInfo<'/examples', '/examples', Record<never, never>, Record<never, never>, '/examples/' | '/examples/plugins' | '/examples/plugins/dialog' | '/examples/plugins/locales' | '/examples/plugins/moment' | '/examples/plugins/storeGet' | '/examples/plugins/storeSet' | '/examples/wireframes' | '/examples/wireframes/baseline' | '/examples/wireframes/constrained' | '/examples/wireframes/discord' | '/examples/wireframes/extended-toolbar' | '/examples/wireframes/inbox' | '/examples/wireframes/side-navigation' | '/examples/wireframes/steam' | '/examples/wireframes/system-bar' | '/examples/wireframes/three-column'>,
@@ -70,8 +71,12 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/accounts.vue': {
-      routes: '/accounts' | '/accounts/login' | '/accounts/logoff' | '/accounts/logon' | '/accounts/logout'
+      routes: '/accounts' | '/accounts/' | '/accounts/login' | '/accounts/logoff' | '/accounts/logon' | '/accounts/logout'
       views: 'default'
+    }
+    'src/pages/accounts/index.vue': {
+      routes: '/accounts/'
+      views: never
     }
     'src/pages/accounts/login.vue': {
       routes: '/accounts/login'
@@ -90,15 +95,15 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/contents.vue': {
-      routes: '/contents' | '/contents/' | '/contents/destinations' | '/contents/tokens' | '/contents/users'
+      routes: '/contents' | '/contents/' | '/contents/channels' | '/contents/tokens' | '/contents/users'
       views: 'default'
     }
     'src/pages/contents/index.vue': {
       routes: '/contents/'
       views: never
     }
-    'src/pages/contents/destinations.vue': {
-      routes: '/contents/destinations'
+    'src/pages/contents/channels.vue': {
+      routes: '/contents/channels'
       views: never
     }
     'src/pages/contents/tokens.vue': {

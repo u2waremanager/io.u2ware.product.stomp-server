@@ -92,7 +92,11 @@ export default {
       .then((r) => {
         console.log(x, "mounted()", 4);
         this.providers = r;
-      });
+      })
+      .catch((r) => {
+        console.log(x, "mounted()", 5, r);
+      })      
+      ;
   },
 };
 </script>

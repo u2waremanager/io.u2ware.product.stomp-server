@@ -52,12 +52,12 @@ export default {
       },      
     },
 
-    currentUser : {
+    userinfo : {
       get: () => {
-        return $store.getters["contents/root"].currentUser;
+        return $store.getters["contents/root"].userinfo;
       },
       set: (val) => {
-        $store.commit("contents/root", { currentUser: val });
+        $store.commit("contents/root", { userinfo: val });
       },      
     }
   }

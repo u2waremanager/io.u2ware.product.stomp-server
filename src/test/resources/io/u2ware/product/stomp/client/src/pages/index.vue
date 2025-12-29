@@ -10,7 +10,6 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        v-if="isAdmin"
         text
         variant="elevated"
         color="error"
@@ -184,14 +183,14 @@ export default {
   methods: {
     start() {
       $contentsApi.oauth2
-        .permission(["ROLE_ADMIN"])
+        .info()
         .then((r) => {
           console.log(x, "start()", 1, r);
           this.$router.push(`/contents`);
         })
         .catch((r) => {
           console.log(x, "start()", 222, r);
-          this.$router.push(`/`);
+          this.$router.push(`/accounts`);
         });
     },
 
@@ -265,16 +264,16 @@ export default {
   watch: {},
 
   mounted() {
-    $contentsApi.oauth2
-      .permission(["ROLE_ADMIN"])
-      .then((r) => {
-        console.log(x, "mounted()", 1, r);
-        this.isAdmin = true;
-      })
-      .catch((r) => {
-        console.log(x, "mounted()", 222, r);
-        this.isAdmin = false;
-      });
+    // $contentsApi.oauth2
+    //   .info(["ROLE_ADMIN"])
+    //   .then((r) => {
+    //     console.log(x, "mounted()", 111, r);
+    //     this.isAdmin = true;
+    //   })
+    //   .catch((r) => {
+    //     console.log(x, "mounted()", 222, r);
+    //     this.isAdmin = false;
+    //   });
   },
 };
 </script>

@@ -20,8 +20,7 @@ export default {
     methods: {},
 
     mounted() {
-
-
+        this.$router.push(`/contents/channels`);
     },
 };
 </script>
