@@ -1,5 +1,6 @@
 package io.u2ware.product.stomp.server;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import org.apache.commons.logging.Log;
@@ -15,16 +16,25 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import io.u2ware.common.oauth2.jwt.JwtConfiguration;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @Configuration
@@ -58,12 +68,40 @@ public class ApplicationSecurityConfig {
                         .requestMatchers("/stomp/**").authenticated()
                         .anyRequest().permitAll()
             )
+
+            .formLogin(formLogin -> 
+                formLogin
+                    .loginPage("/login").permitAll()
+                    .successHandler(new AuthenticationSuccessHandler(){
+
+                        @Override
+                        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                            System.err.println(request);
+                            System.err.println(response);
+                            System.err.println(authentication);
+                            System.err.println(request.getParameterMap());
+                            System.err.println(request.getParameter("hello"));
+                        }
+
+                })
+            )
             .oauth2ResourceServer(
                     oauth2->oauth2.jwt(Customizer.withDefaults())
             );
         
         return http.build();
     }
+
+	@Bean
+	public UserDetailsService userDetailsService() {
+		UserDetails userDetails = User.withDefaultPasswordEncoder()
+			.username("a")
+			.password("a")
+			.roles("USER")
+			.build();
+
+		return new InMemoryUserDetailsManager(userDetails);
+	}
 
 
     @Bean
